@@ -334,7 +334,7 @@ module.exports = function(Role) {
     }
 
     var roleMappingModel = this.roleMappingModel;
-    this.findOne({where: {name: role}}, function(err, result) {
+    this.findOne({where: {name: role}}, context.options, function(err, result) {
       if (err) {
         if (callback) callback(err);
         return;
@@ -357,7 +357,7 @@ module.exports = function(Role) {
 
         if (principalType && principalId) {
           roleMappingModel.findOne({where: {roleId: roleId,
-              principalType: principalType, principalId: principalId}},
+              principalType: principalType, principalId: principalId}}, context.options,
             function(err, result) {
               debug('Role mapping found: %j', result);
               done(!err && result); // The only arg is the result
@@ -442,7 +442,7 @@ module.exports = function(Role) {
           if (options.returnOnlyRoleNames === true) {
             filter.include = ['role'];
           }
-          roleMappingModel.find(filter, function(err, mappings) {
+          roleMappingModel.find(filter, context.options, function(err, mappings) {
             debug('Role mappings found: %s %j', err, mappings);
             if (err) {
               if (done) done(err);

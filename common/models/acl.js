@@ -422,7 +422,7 @@ module.exports = function(ACL) {
     var staticACLs = self.getStaticACLs(model.modelName, property);
 
     self.find({where: {model: model.modelName, property: propertyQuery,
-      accessType: accessTypeQuery}}, function(err, acls) {
+      accessType: accessTypeQuery}}, context.options, function(err, acls) {
       if (err) {
         if (callback) callback(err);
         return;

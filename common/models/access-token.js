@@ -104,7 +104,7 @@ module.exports = function(AccessToken) {
     var id = tokenIdForRequest(req, options);
 
     if (id != null) {
-      this.findById(id, function(err, token) {
+      this.findById(id, options, function(err, token) {
         if (err) {
           cb(err);
         } else if (token) {

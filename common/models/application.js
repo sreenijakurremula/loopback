@@ -140,14 +140,14 @@ module.exports = function(Application) {
    * @callback {Function} callback
    * @param {Error} err
    */
-  Application.prototype.resetKeys = function(cb) {
+  Application.prototype.resetKeys = function(options, cb) {
     this.clientKey = generateKey('client');
     this.javaScriptKey = generateKey('javaScript');
     this.restApiKey = generateKey('restApi');
     this.windowsKey = generateKey('windows');
     this.masterKey = generateKey('master');
     this.modified = new Date();
-    this.save(cb);
+    this.save(options, cb);
   };
 
   /**
@@ -156,14 +156,14 @@ module.exports = function(Application) {
    * @callback {Function} callback
    * @param {Error} err
    */
-  Application.resetKeys = function(appId, cb) {
+  Application.resetKeys = function(appId, options, cb) {
     cb = cb || utils.createPromiseCallback();
-    this.findById(appId, function(err, app) {
+    this.findById(appId, null, options, function(err, app) {
       if (err) {
         if (cb) cb(err, app);
         return;
       }
-      app.resetKeys(cb);
+      app.resetKeys(options, cb);
     });
     return cb.promise;
   };

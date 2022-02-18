@@ -100,7 +100,7 @@ module.exports = function(AccessToken) {
       cb = options;
       options = {};
     }
-
+    options.http = true;
     var id = tokenIdForRequest(req, options);
 
     if (id != null) {

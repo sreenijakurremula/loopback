@@ -747,28 +747,28 @@ module.exports = function(User) {
       next();
     });
 
-    UserModel.remoteMethod(
-      'login',
-      {
-        description: 'Login a user with username/email and password.',
-        accepts: [
-          {arg: 'credentials', type: 'object', required: true, http: {source: 'body'}},
-          {arg: 'include', type: ['string'], http: {source: 'query'},
-            description: 'Related objects to include in the response. ' +
-            'See the description of return value for more details.' },
-        ],
-        returns: {
-          arg: 'accessToken', type: 'object', root: true,
-          description:
-            g.f('The response body contains properties of the {{AccessToken}} created on login.\n' +
-            'Depending on the value of `include` parameter, the body may contain ' +
-            'additional properties:\n\n' +
-            '  - `user` - `U+007BUserU+007D` - Data of the currently logged in user. ' +
-            '{{(`include=user`)}}\n\n'),
-        },
-        http: {verb: 'post'}
-      }
-    );
+    // UserModel.remoteMethod(
+    //   'login',
+    //   {
+    //     description: 'Login a user with username/email and password.',
+    //     accepts: [
+    //       {arg: 'credentials', type: 'object', required: true, http: {source: 'body'}},
+    //       {arg: 'include', type: ['string'], http: {source: 'query'},
+    //         description: 'Related objects to include in the response. ' +
+    //         'See the description of return value for more details.' },
+    //     ],
+    //     returns: {
+    //       arg: 'accessToken', type: 'object', root: true,
+    //       description:
+    //         g.f('The response body contains properties of the {{AccessToken}} created on login.\n' +
+    //         'Depending on the value of `include` parameter, the body may contain ' +
+    //         'additional properties:\n\n' +
+    //         '  - `user` - `U+007BUserU+007D` - Data of the currently logged in user. ' +
+    //         '{{(`include=user`)}}\n\n'),
+    //     },
+    //     http: {verb: 'post'}
+    //   }
+    // );
 
     UserModel.remoteMethod(
       'logout',

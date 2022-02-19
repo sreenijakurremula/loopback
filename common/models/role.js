@@ -150,7 +150,7 @@ module.exports = function(Role) {
     var modelClass = context.model;
     var modelId = context.modelId;
     var userId = context.getUserId();
-    Role.isOwner(modelClass, modelId, userId, callback);
+    Role.isOwner(modelClass, modelId, userId, callback, context);
   });
 
   function isUserClass(modelClass) {
@@ -182,7 +182,7 @@ module.exports = function(Role) {
    * @param {*} userId The user ID
    * @param {Function} callback Callback function
    */
-  Role.isOwner = function isOwner(modelClass, modelId, userId, callback) {
+  Role.isOwner = function isOwner(modelClass, modelId, userId, callback, context) {
     assert(modelClass, 'Model class is required');
     debug('isOwner(): %s %s userId: %s', modelClass && modelClass.modelName, modelId, userId);
     // No userId is present
@@ -201,7 +201,7 @@ module.exports = function(Role) {
       return;
     }
 
-    modelClass.findById(modelId, function(err, inst) {
+    modelClass.findById(modelId, null, context && context.options, function(err, inst) {
       if (err || !inst) {
         debug('Model not found for id %j', modelId);
         if (callback) callback(err, false);

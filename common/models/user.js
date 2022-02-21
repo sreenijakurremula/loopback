@@ -467,7 +467,7 @@ module.exports = function(User) {
       if (err) { return fn(err); }
 
       user.verificationToken = token;
-      user.save(function(err) {
+      user.save(options.options, function(err) {
         if (err) {
           fn(err);
         } else {

@@ -115,7 +115,7 @@ module.exports = function(Application) {
    * @param {Object} options  Other options
    * @param {Function} callback  Callback function
    */
-  Application.register = function(owner, name, options, cb) {
+  Application.register = function(owner, name, options, context, cb) {
     assert(owner, 'owner is required');
     assert(name, 'name is required');
 
@@ -131,7 +131,7 @@ module.exports = function(Application) {
         props[p] = options[p];
       }
     }
-    this.create(props, cb);
+    this.create(props, context, cb);
     return cb.promise;
   };
 

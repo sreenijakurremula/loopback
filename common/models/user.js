@@ -108,7 +108,7 @@ module.exports = function(User) {
     ttl = Math.min(ttl || userModel.settings.ttl, userModel.settings.maxTTL);
     this.accessTokens.create({
       ttl: ttl
-    }, cb);
+    }, options, cb);
     return cb.promise;
   };
 

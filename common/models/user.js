@@ -593,7 +593,8 @@ module.exports = function(User) {
    * @param {Error} err
    */
 
-  User.resetPassword = function(options, cb) {
+  User.resetPassword = function(ctx, cb) {
+    const options = ctx.req.body;
     cb = cb || utils.createPromiseCallback();
     var UserModel = this;
     var ttl = UserModel.settings.resetPasswordTokenTTL || DEFAULT_RESET_PW_TTL;
@@ -619,7 +620,7 @@ module.exports = function(User) {
     if (options.realm) {
       where.realm = options.realm;
     }
-    UserModel.findOne({ where: where }, function(err, user) {
+    UserModel.findOne({ where: where }, ctx.req.options, function(err, user) {
       if (err) {
         return cb(err);
       }
@@ -638,7 +639,7 @@ module.exports = function(User) {
         return cb(err);
       }
 
-      user.createAccessToken(ttl, function(err, accessToken) {
+      user.createAccessToken(ttl, ctx.req.options, function(err, accessToken) {
         if (err) {
           return cb(err);
         }
@@ -648,6 +649,7 @@ module.exports = function(User) {
           accessToken: accessToken,
           user: user,
           options: options,
+          req: ctx.req,
         });
       });
     });
@@ -806,7 +808,7 @@ module.exports = function(User) {
       {
         description: 'Reset password for a user with email.',
         accepts: [
-          {arg: 'options', type: 'object', required: true, http: {source: 'body'}}
+          {arg: 'ctx', type: 'object', required: true, http: {source: 'context'}}
         ],
         http: {verb: 'post', path: '/reset'}
       }

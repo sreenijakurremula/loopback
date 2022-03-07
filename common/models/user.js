@@ -549,16 +549,16 @@ module.exports = function(User) {
    * @callback {Function} callback
    * @param {Error} err
    */
-  User.confirm = function(uid, token, redirect, fn) {
+  User.confirm = function(uid, token, redirect, ctx, fn) {
     fn = fn || utils.createPromiseCallback();
-    this.findById(uid, function(err, user) {
+    this.findById(uid, null, ctx.req.options, function(err, user) {
       if (err) {
         fn(err);
       } else {
         if (user && user.verificationToken === token) {
           user.verificationToken = null;
           user.emailVerified = true;
-          user.save(function(err) {
+          user.save(ctx.req.options, function(err) {
             if (err) {
               fn(err);
             } else {
@@ -594,7 +594,7 @@ module.exports = function(User) {
    */
 
   User.resetPassword = function(ctx, cb) {
-    const options = ctx.req.body;
+    let options = ctx.req.body;
     cb = cb || utils.createPromiseCallback();
     var UserModel = this;
     var ttl = UserModel.settings.resetPasswordTokenTTL || DEFAULT_RESET_PW_TTL;
@@ -797,7 +797,8 @@ module.exports = function(User) {
         accepts: [
           {arg: 'uid', type: 'string', required: true},
           {arg: 'token', type: 'string', required: true},
-          {arg: 'redirect', type: 'string'}
+          {arg: 'redirect', type: 'string'},
+          {arg: 'ctx', type: 'object', required: true, http: {source: 'context'}}
         ],
         http: {verb: 'get', path: '/confirm'}
       }
